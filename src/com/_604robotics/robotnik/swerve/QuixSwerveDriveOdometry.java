@@ -2,10 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package com._604robotics.quixsam.odometry;
-
-import com._604robotics.robotnik.swerve.QuixSwerveDriveKinematics;
-import com._604robotics.robotnik.swerve.QuixSwerveModuleState;
+package com._604robotics.robotnik.swerve;
 
 import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.MathUsageId;
@@ -22,7 +19,7 @@ import edu.wpi.first.wpiutil.WPIUtilJNI;
  * <p>Teams can use odometry during the autonomous period for complex tasks like path following.
  * Furthermore, odometry can be used for latency compensation when using computer-vision systems.
  */
-public class QuixsamSwerveDriveOdometry {
+public class QuixSwerveDriveOdometry {
   private final QuixSwerveDriveKinematics m_kinematics;
   private Pose2d m_poseMeters;
   private double m_prevTimeSeconds = -1;
@@ -37,8 +34,7 @@ public class QuixsamSwerveDriveOdometry {
    * @param gyroAngle The angle reported by the gyroscope.
    * @param initialPose The starting position of the robot on the field.
    */
-  public QuixsamSwerveDriveOdometry(
-      QuixSwerveDriveKinematics kinematics, Rotation2d gyroAngle, Pose2d initialPose) {
+  public QuixSwerveDriveOdometry(QuixSwerveDriveKinematics kinematics, Rotation2d gyroAngle, Pose2d initialPose) {
     m_kinematics = kinematics;
     m_poseMeters = initialPose;
     m_gyroOffset = m_poseMeters.getRotation().minus(gyroAngle);
@@ -52,7 +48,7 @@ public class QuixsamSwerveDriveOdometry {
    * @param kinematics The swerve drive kinematics for your drivetrain.
    * @param gyroAngle The angle reported by the gyroscope.
    */
-  public QuixsamSwerveDriveOdometry(QuixSwerveDriveKinematics kinematics, Rotation2d gyroAngle) {
+  public QuixSwerveDriveOdometry(QuixSwerveDriveKinematics kinematics, Rotation2d gyroAngle) {
     this(kinematics, gyroAngle, new Pose2d());
   }
 
@@ -77,27 +73,6 @@ public class QuixsamSwerveDriveOdometry {
    * @return The pose of the robot (x and y are in meters).
    */
   public Pose2d getPoseMeters() {
-    return m_poseMeters;
-  }
-
-  public Pose2d updateWithTime(
-     double prevTimeSeconds, double currentTimeSeconds, Rotation2d gyroAngle, QuixSwerveModuleState... moduleStates) {
-    double period = prevTimeSeconds >= 0 ? currentTimeSeconds - prevTimeSeconds : 0.0;
-    m_prevTimeSeconds = currentTimeSeconds;
-
-    var angle = gyroAngle.plus(m_gyroOffset);
-
-    var chassisState = m_kinematics.toChassisSpeeds(moduleStates);
-    var newPose =
-        m_poseMeters.exp(
-            new Twist2d(
-                chassisState.vxMetersPerSecond * period,
-                chassisState.vyMetersPerSecond * period,
-                angle.minus(m_previousAngle).getRadians()));
-
-    m_previousAngle = angle;
-    m_poseMeters = new Pose2d(newPose.getTranslation(), angle);
-
     return m_poseMeters;
   }
 

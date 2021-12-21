@@ -6,8 +6,8 @@
 // import com._604robotics.quixsam.mathematics.DoubleInterpolatableTreeMap;
 // import com._604robotics.quixsam.mathematics.Interpolatable;
 // import com._604robotics.quixsam.odometry.DiffDriveOdometryMeasurement;
-// import com._604robotics.robotnik.prefabs.vision.VisionCamera;
-// import com._604robotics.robotnik.prefabs.vision.VisionCamera.Target;
+// import com._604robotics.robotnik.vision.VisionCamera;
+// import com._604robotics.robotnik.vision.VisionCamera.Target;
 
 // import edu.wpi.first.wpilibj.RobotController;
 // import edu.wpi.first.wpilibj.Timer;

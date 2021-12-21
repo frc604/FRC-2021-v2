@@ -1,9 +1,8 @@
 package com._604robotics.quixsam.odometry;
 
-import com._604robotics.robotnik.prefabs.swerve.QuixSwerveModuleState;
+import com._604robotics.robotnik.swerve.QuixSwerveModuleState;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 
 public class SwerveDriveOdometryMeasurement {
   private final Rotation2d gyroAngle;
