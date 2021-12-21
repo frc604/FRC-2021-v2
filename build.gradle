@@ -6,7 +6,7 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
-def ROBOT_MAIN_CLASS = "frc.robot.Main"
+def ROBOT_MAIN_CLASS = "com._604robotics.robot2021.Main"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
@@ -29,7 +29,7 @@ deploy {
         // Built in artifact to deploy arbitrary files to the roboRIO.
         fileTreeArtifact('frcStaticFileDeploy') {
             // The directory below is the local directory to deploy
-            files = fileTree(dir: 'src/main/deploy')
+            files = fileTree(dir: 'src/com/_604robotics/deploy')
             // Deploy to RoboRIO target, into /home/lvuser/deploy
             targets << "roborio"
             directory = '/home/lvuser/deploy'
@@ -62,6 +62,27 @@ dependencies {
     // Websocket extensions require additional configuration.
     // simulation wpi.deps.sim.ws_server(wpi.platforms.desktop, false)
     // simulation wpi.deps.sim.ws_client(wpi.platforms.desktop, false)
+
+    // External dependencies.
+    implementation group: 'org.knowm.xchart', name: 'xchart', version: '3.6.2'
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+    implementation group: 'org.hipparchus', name: 'hipparchus', version: '1.8', ext: 'pom'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+}
+
+// Source sets are used to define the source files for the project.
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src"]
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ["test"]
+        }
+    }
 }
 
 // Simulation configuration (e.g. environment variables).
