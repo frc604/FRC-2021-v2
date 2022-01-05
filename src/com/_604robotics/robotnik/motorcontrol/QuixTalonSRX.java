@@ -1,9 +1,10 @@
 package com._604robotics.robotnik.motorcontrol;
 
-import com._604robotics.robotnik.Module;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class QuixTalonSRX extends MotorController {
 
@@ -13,8 +14,8 @@ public class QuixTalonSRX extends MotorController {
 
   private int peakLimit = 0;
 
-  public QuixTalonSRX(int port, String name, Module module) {
-    super(module);
+  public QuixTalonSRX(int port, String name, SubsystemBase subsystem) {
+    super(subsystem);
     controller = new WPI_TalonSRX(port);
     controller.configVoltageCompSaturation(12);
     controller.enableVoltageCompensation(true);

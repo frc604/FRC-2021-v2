@@ -1,7 +1,6 @@
 package com._604robotics.robotnik.swerve;
 
-import com._604robotics.robotnik.Module;
-import com._604robotics.robotnik.devices.BetterAbsoluteEncoder;
+import com._604robotics.robotnik.devices.AbsoluteEncoder;
 import com._604robotics.robotnik.devices.IntegratedEncoder;
 import com._604robotics.robotnik.motorcontrol.MotorController;
 import com._604robotics.robotnik.motorcontrol.controllers.MotorControllerPID;
@@ -10,15 +9,16 @@ import com._604robotics.robotnik.motorcontrol.gearing.CalculableRatio;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class QuixSwerveModule {
     protected String name;
     protected int id;
-    protected Module module;
+    protected SubsystemBase subsystem;
     protected Translation2d position;
     protected MotorController driveMotor;
     protected MotorController steeringMotor;
-    protected BetterAbsoluteEncoder absSteeringEncoder;
+    protected AbsoluteEncoder absSteeringEncoder;
     protected IntegratedEncoder driveEncoder;
     protected IntegratedEncoder steeringEncoder;
     protected MotorControllerPID drivePID;
@@ -37,11 +37,11 @@ public abstract class QuixSwerveModule {
     public QuixSwerveModule(
         String name,
         int id,
-        Module module,
+        SubsystemBase subsystem,
         Translation2d position,
         MotorController driveMotor,
         MotorController steeringMotor,
-        BetterAbsoluteEncoder absSteeringEncoder,
+        AbsoluteEncoder absSteeringEncoder,
         IntegratedEncoder driveEncoder,
         IntegratedEncoder steeringEncoder,
         MotorControllerPID drivePID,
@@ -55,7 +55,7 @@ public abstract class QuixSwerveModule {
     ) {
         this.name = name;
         this.id = id;
-        this.module = module;
+        this.subsystem = subsystem;
         this.position = position;
         this.driveMotor = driveMotor;
         this.steeringMotor = steeringMotor;
@@ -84,36 +84,6 @@ public abstract class QuixSwerveModule {
 
         lastAngle = getState().angle.getDegrees();
     }
-
-    // public void setDesiredStateClosedLoop(QuixSwerveModuleState desiredState) {
-    //     desiredState = QuixSwerveModuleState.optimize(desiredState, getState().angle);
-
-    //     drivePID.setSetpointVelocity(desiredState.speedMetersPerSecond);
-
-    //     if (desiredState.speedMetersPerSecond >= 1e-6) {
-    //         steeringPID.setSetpointPosition(desiredState.angle.getRadians());
-    //     }
-    // }
-
-    // public void setDesiredStateClosedLoop(QuixSwerveModuleState desiredState, double feedforwardVolts) {
-    //     desiredState = QuixSwerveModuleState.optimize(desiredState, getState().angle);
-
-    //     drivePID.setSetpointVelocity(desiredState.speedMetersPerSecond, feedforwardVolts);
-
-    //     if (desiredState.speedMetersPerSecond >= 1e-6) {
-    //         steeringPID.setSetpointPosition(desiredState.angle.getRadians());
-    //     }
-    // }
-
-    // public void setDesiredStateOpenLoop(QuixSwerveModuleState desiredState) {
-    //     desiredState = QuixSwerveModuleState.optimize(desiredState, getState().angle);
-
-    //     driveMotor.set(desiredState.speedMetersPerSecond / maxDriveVelocity);
-    
-    //     if (desiredState.speedMetersPerSecond >= 1e-3) {
-    //         steeringPID.setSetpointPosition(desiredState.angle.getRadians());
-    //     }
-    // }
 
     public void setDesiredStateClosedLoop(QuixSwerveModuleState desiredState){
         desiredState = QuixSwerveModuleState.optimize(desiredState, getState().angle);

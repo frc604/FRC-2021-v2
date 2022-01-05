@@ -1,8 +1,8 @@
 package com._604robotics.robotnik.motorcontrol;
 
-import com._604robotics.robotnik.Module;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class QuixVictorSPX extends MotorController {
 
@@ -12,8 +12,8 @@ public class QuixVictorSPX extends MotorController {
 
   private int PDPport;
 
-  public QuixVictorSPX(int port, String name, int PDPport, Module module) {
-    super(module);
+  public QuixVictorSPX(int port, String name, int PDPport, SubsystemBase subsystem) {
+    super(subsystem);
     controller = new WPI_VictorSPX(port);
     controller.configVoltageCompSaturation(12);
     controller.enableVoltageCompensation(true);
@@ -22,8 +22,8 @@ public class QuixVictorSPX extends MotorController {
     PowerMonitor.getInstance().addController(this, name);
   }
 
-  public QuixVictorSPX(int port, String name, Module module) {
-    super(module);
+  public QuixVictorSPX(int port, String name, SubsystemBase subsystem) {
+    super(subsystem);
     controller = new WPI_VictorSPX(port);
     controller.configVoltageCompSaturation(12);
     controller.enableVoltageCompensation(true);

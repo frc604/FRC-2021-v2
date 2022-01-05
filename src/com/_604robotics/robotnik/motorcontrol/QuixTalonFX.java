@@ -1,8 +1,9 @@
 package com._604robotics.robotnik.motorcontrol;
 
-import com._604robotics.robotnik.Module;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class QuixTalonFX extends MotorController {
 
@@ -13,8 +14,8 @@ public class QuixTalonFX extends MotorController {
   private double peakCurrentLimit = 40;
   private double peakCurrentDuration = 0.1;
 
-  public QuixTalonFX(int port, String name, Motor motor, Module module) {
-    super(motor, module);
+  public QuixTalonFX(int port, String name, Motor motor, SubsystemBase subsystem) {
+    super(motor, subsystem);
     
     this.controller = new WPI_TalonFX(port);
 

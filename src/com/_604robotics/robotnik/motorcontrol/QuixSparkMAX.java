@@ -1,9 +1,9 @@
 package com._604robotics.robotnik.motorcontrol;
 
-import com._604robotics.robotnik.Module;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class QuixSparkMAX extends MotorController {
 
@@ -11,8 +11,8 @@ public class QuixSparkMAX extends MotorController {
 
   private String name;
 
-  public QuixSparkMAX(int port, String name, Motor motor, Module module) {
-    super(motor, module);
+  public QuixSparkMAX(int port, String name, Motor motor, SubsystemBase subsystem) {
+    super(motor, subsystem);
     if (super.motor == Motor.kNEO || super.motor == Motor.kNEO550) {
       controller = new CANSparkMax(port, MotorType.kBrushless);
     } else {

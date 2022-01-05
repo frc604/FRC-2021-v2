@@ -1,9 +1,8 @@
 package com._604robotics.robotnik.auto;
 
-import com._604robotics.robotnik.DashboardManager;
-import com._604robotics.robotnik.Module;
-import com._604robotics.robotnik.Output;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +19,7 @@ public class QuikPlanSwerveReader {
   List<Double> timeData = new ArrayList<>();
   List<List<Double>> data = new ArrayList<>();
   List<Boolean> shootData = new ArrayList<>();
-  Output<File> chooser;
+  SendableChooser<File> chooser = new SendableChooser<>();
 
   public QuikPlanSwerveReader(Module module) {
     clearLoadedData();
@@ -34,10 +33,10 @@ public class QuikPlanSwerveReader {
       e.printStackTrace();
     }
 
-    System.out.println(files);
-    this.chooser =
-        DashboardManager.getInstance()
-            .registerCollection("Quikplan Paths", files.get(0), files, module);
+    for (File file : files) {
+      chooser.addOption(file.getName(), file);
+    }
+
     loadChosenFile();
   }
 
@@ -65,8 +64,8 @@ public class QuikPlanSwerveReader {
   }
 
   public void loadChosenFile() {
-    loadData(chooser.get());
-    System.out.println("Loading: " + chooser.get());
+    loadData(chooser.getSelected());
+    System.out.println("Loading: " + chooser.getSelected());
   }
 
   public void clearLoadedData() {

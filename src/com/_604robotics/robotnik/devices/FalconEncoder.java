@@ -4,7 +4,7 @@ import com._604robotics.robotnik.motorcontrol.QuixTalonFX;
 import com._604robotics.robotnik.motorcontrol.gearing.CalculableRatio;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 
-public class FalconEncoder implements IntegratedEncoder, Encoder {
+public class FalconEncoder implements IntegratedEncoder {
   private final TalonFXSensorCollection sensors;
 
   private CalculableRatio ratio;
@@ -31,11 +31,6 @@ public class FalconEncoder implements IntegratedEncoder, Encoder {
   @Override
   public void setInverted(boolean inverted) {
     this.inverted = inverted;
-  }
-
-  @Override
-  public double getValue() {
-    return getPosition();
   }
 
   @Override

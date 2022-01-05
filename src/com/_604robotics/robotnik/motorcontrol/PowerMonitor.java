@@ -1,20 +1,17 @@
 package com._604robotics.robotnik.motorcontrol;
 
-import com._604robotics.robotnik.Logger;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class PowerMonitor {
-  private static final Logger logger = new Logger(PowerMonitor.class);
-
   private static PowerMonitor single_instance = null;
 
   public final PowerDistributionPanel panel;
-
   public final Compressor compressor;
 
   private final NetworkTableInstance network = NetworkTableInstance.getDefault();
@@ -22,14 +19,16 @@ public class PowerMonitor {
 
   private HashMap<String, MotorController> controllers = new HashMap<>();
 
+  private final static Logger logger = Logger.getGlobal();
+  
+
   public int PDPchannel;
 
   public PowerMonitor(int PDPchannel, int CompressorID) {
     this.PDPchannel = PDPchannel;
 
-    panel = new PowerDistributionPanel(1);
-
-    compressor = new Compressor(0);
+    panel = new PowerDistributionPanel(PDPchannel);
+    compressor = new Compressor(CompressorID);
 
     table.getEntry("Compressor Current").setDouble(compressor.getCompressorCurrent());
     table.getEntry("Compressor State").setBoolean(compressor.enabled());
@@ -50,18 +49,19 @@ public class PowerMonitor {
    */
   public void addController(MotorController controller, String name) {
     controllers.put(name, controller);
+    
     table
-        .getSubTable(controller.getModule().getName())
+        .getSubTable(controller.getSubsystem().getName())
         .getSubTable(name)
         .getEntry("Current")
         .setDouble(controller.getOutputCurrent());
     table
-        .getSubTable(controller.getModule().getName())
+        .getSubTable(controller.getSubsystem().getName())
         .getSubTable(name)
         .getEntry("Limit")
         .setDouble(controller.getCurrentLimit());
     table
-        .getSubTable(controller.getModule().getName())
+        .getSubTable(controller.getSubsystem().getName())
         .getSubTable(name)
         .getEntry("Limiting")
         .setBoolean(controller.isCurrentLimiting());
@@ -73,29 +73,28 @@ public class PowerMonitor {
       MotorController controller = mapElement.getValue();
 
       table
-          .getSubTable(controller.getModule().getName())
+          .getSubTable(controller.getSubsystem().getName())
           .getSubTable(name)
           .getEntry("Current")
           .setDouble(controller.getOutputCurrent());
       table
-          .getSubTable(controller.getModule().getName())
+          .getSubTable(controller.getSubsystem().getName())
           .getSubTable(name)
           .getEntry("Limit")
           .setDouble(controller.getCurrentLimit());
       table
-          .getSubTable(controller.getModule().getName())
+          .getSubTable(controller.getSubsystem().getName())
           .getSubTable(name)
           .getEntry("Limiting")
           .setBoolean(controller.isCurrentLimiting());
     }
 
-    /*
+
     table.getEntry("Compressor Current").setDouble(compressor.getCompressorCurrent());
     table.getEntry("Compressor State").setBoolean(compressor.enabled());
     table.getEntry("Is Compressed").setBoolean(compressor.getPressureSwitchValue());
 
     checkFaults();
-    */
   }
 
   /** @param state */
@@ -110,11 +109,11 @@ public class PowerMonitor {
   @SuppressWarnings("unused")
   private void checkFaults() {
     if (compressor.getCompressorCurrentTooHighFault()) {
-      logger.log("FAULT", "Compressor overcurrent fault!");
+      logger.warning("Compressor overcurrent fault!");
     } else if (compressor.getCompressorNotConnectedFault()) {
-      logger.log("FAULT", "Compressor is not connected!");
+      logger.warning("Compressor is not connected!");
     } else if (compressor.getCompressorShortedFault()) {
-      logger.log("FAULT", "Compressor was shorted!");
+      logger.warning("Compressor was shorted!");
     }
   }
 

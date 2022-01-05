@@ -1,26 +1,27 @@
 package com._604robotics.robotnik.motorcontrol;
 
-import com._604robotics.robotnik.Module;
 import com._604robotics.robotnik.motorcontrol.wpilibj.SpeedController;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class MotorController implements SpeedController {
 
   protected final Motor motor;
 
-  protected final Module module;
+  protected final SubsystemBase subsystem;
 
   protected int currentLimit = 0;
 
   protected boolean isLimiting = false;
 
-  public MotorController(Motor motor, Module module) {
+  public MotorController(Motor motor, SubsystemBase subsystem) {
     this.motor = motor;
-    this.module = module;
+    this.subsystem = subsystem;
   }
 
-  public MotorController(Module module) {
+  public MotorController(SubsystemBase subsystem) {
     this.motor = null;
-    this.module = module;
+    this.subsystem = subsystem;
   }
 
   public abstract void set(double power);
@@ -61,7 +62,8 @@ public abstract class MotorController implements SpeedController {
     return isLimiting;
   }
 
-  public Module getModule() {
-    return module;
+  public SubsystemBase getSubsystem() {
+    
+    return subsystem;
   }
 }

@@ -1,9 +1,8 @@
 package com._604robotics.robotnik.auto;
 
-import com._604robotics.robotnik.DashboardManager;
-import com._604robotics.robotnik.Module;
-import com._604robotics.robotnik.Output;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,7 +18,7 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 public class QuikPlanReader {
   List<Double> timeData = new ArrayList<>();
   List<List<Double>> data = new ArrayList<>();
-  Output<File> chooser;
+  SendableChooser<File> chooser = new SendableChooser<>();
 
   public QuikPlanReader(Module module) {
     clearLoadedData();
@@ -32,14 +31,17 @@ public class QuikPlanReader {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    this.chooser =
-        DashboardManager.getInstance()
-            .registerCollection("Quikplan Paths", files.get(0), files, module);
+
+    for (File file : files) {
+      chooser.addOption(file.getName(), file);
+    }
+
     loadChosenFile();
   }
 
   public void loadData(File file) {
     clearLoadedData();
+
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = br.readLine()) != null) {
@@ -62,8 +64,8 @@ public class QuikPlanReader {
   }
 
   public void loadChosenFile() {
-    loadData(chooser.get());
-    System.out.println("Loading: " + chooser.get());
+    loadData(chooser.getSelected());
+    System.out.println("Loading: " + chooser.getSelected());
   }
 
   public void clearLoadedData() {

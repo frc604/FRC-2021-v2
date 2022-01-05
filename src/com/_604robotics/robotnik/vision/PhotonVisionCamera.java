@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPipelineResult;
-import org.photonvision.PhotonTrackedTarget;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionCamera extends VisionCamera {
   private PhotonCamera camera;

@@ -23,6 +23,10 @@ public class QuixCANCoder implements AbsoluteEncoder {
         this.encoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 50);
         this.encoder.setStatusFramePeriod(CANCoderStatusFrame.VbatAndFaults, 100);
     }
+     
+    public String getName() {
+        return this.name;
+    }
 
     @Override
     public boolean getInverted() {

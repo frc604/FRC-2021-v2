@@ -5,7 +5,7 @@ import com._604robotics.robotnik.motorcontrol.gearing.CalculableRatio;
 import com.revrobotics.CANEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class NEOEncoder implements IntegratedEncoder, Encoder {
+public class NEOEncoder implements IntegratedEncoder {
   private final CANEncoder encoder;
 
   private CalculableRatio ratio;
@@ -31,12 +31,7 @@ public class NEOEncoder implements IntegratedEncoder, Encoder {
   public void setInverted(boolean inverted) {
     this.inverted = inverted;
   }
-
-  @Override
-  public double getValue() {
-    return getPosition();
-  }
-
+  
   @Override
   public void setdistancePerRotation(double distancePerRotation) {
     if (ratio == null) {
